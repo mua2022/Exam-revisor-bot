@@ -2,7 +2,6 @@ python-dotenv
 langchain
 langchain-community
 langchain-openai
-faiss-cpu==1.8.0.post1
 sentence-transformers
 transformers
 accelerate
