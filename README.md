@@ -8,6 +8,9 @@ This makes it a perfect tool for:
 - 💼 **Executive Summaries** – Upload reports, board papers, or meeting notes and get concise summaries and insights.  
 
 ---
+You can check out the deployed site by clicking the following :[Exam-revisor-bot](https://exam-revisor-bot-abqkojew7o64xpwhls3c85.streamlit.app/)
+
+---
 
 ## 🚀 Features  
 
