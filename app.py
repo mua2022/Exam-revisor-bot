@@ -52,7 +52,7 @@ with st.sidebar:
 
         # Load docs
         docs = load_docs_from_folder(str(data_dir)) + load_docs_from_urls([u for u in urls if u])
-        n = build_faiss_index(docs)
+        n = build_chroma_index(docs)
         st.success(f"✅ Indexed {n} chunks successfully")
 
     st.markdown("---")
