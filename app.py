@@ -127,7 +127,7 @@ if st.session_state.chain:
         st.session_state.messages.append(("assistant", answer))
 
         # Refresh to show new messages instantly
-        st.experimental_rerun()
+        st.rerun()
 else:
     st.info("⚠️ Please upload and process a document first to start chatting.")
 
