@@ -1,4 +1,5 @@
 import os
+import streamlit as st
 from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
@@ -7,14 +8,21 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from groq import Groq
 
 # === Load environment variables === #
-load_dotenv()
+load_dotenv()  # Local dev
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama3-70b-8192")
-EMBEDDINGS_MODEL = os.getenv("EMBEDDINGS_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
-TOP_K = int(os.getenv("TOP_K", 6))
-CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", 800))
-CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", 120))
+def get_secret(key: str, default=None):
+    """Get secret from Streamlit Cloud or .env/local environment."""
+    if key in st.secrets:
+        return st.secrets[key]
+    return os.getenv(key, default)
+
+# === Configuration === #
+GROQ_API_KEY = get_secret("GROQ_API_KEY")
+GROQ_MODEL = get_secret("GROQ_MODEL", "llama3-70b-8192")
+EMBEDDINGS_MODEL = get_secret("EMBEDDINGS_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+TOP_K = int(get_secret("TOP_K", 6))
+CHUNK_SIZE = int(get_secret("CHUNK_SIZE", 800))
+CHUNK_OVERLAP = int(get_secret("CHUNK_OVERLAP", 120))
 
 # === Initialize Embeddings === #
 embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
@@ -22,6 +30,8 @@ embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
 # === LLM Wrapper for Groq === #
 class GroqLLM:
     def __init__(self, model=GROQ_MODEL):
+        if not GROQ_API_KEY:
+            raise ValueError("❌ Missing GROQ_API_KEY. Please set it in .env or Streamlit secrets.")
         self.client = Groq(api_key=GROQ_API_KEY)
         self.model = model
 
@@ -30,7 +40,7 @@ class GroqLLM:
             model=self.model,
             messages=[{"role": "user", "content": prompt}],
         )
-        return response.choices[0].message.content  # clean access
+        return response.choices[0].message.content
 
 # === Create Vectorstore === #
 def create_vectorstore(pdf_path: str):
