@@ -1,9 +1,16 @@
+import sys
+try:
+    __import__("pysqlite3")
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+except ImportError:
+    pass
+
 import os
 from dotenv import load_dotenv
 import streamlit as st
 from pathlib import Path
 from ingest import load_docs_from_folder, load_docs_from_urls
-from build_index import build_faiss_index
+from build_index import build_chroma_index
 from rag_chain import build_chain
 
 # Load environment variables
