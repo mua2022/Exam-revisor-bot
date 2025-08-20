@@ -6,7 +6,7 @@ faiss-cpu==1.8.0.post1
 sentence-transformers==3.0.1
 transformers==4.42.3
 accelerate==0.33.0
-torch>=2.2.0
+torch>=2.0.1
 pypdf==4.2.0
 unstructured==0.14.9
 beautifulsoup4==4.12.3
