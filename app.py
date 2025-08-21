@@ -61,6 +61,15 @@ with st.sidebar:
     if st.button("🗑️ Clear Chat History"):
         st.session_state.messages = []
         st.success("Chat history cleared!")
+    
+    st.markdown(
+    """
+    ### 💖 Support this project  
+    If you find this useful, consider supporting:  
+    - ☕ [Buy me a coffee](https://buymeacoffee.com/muaemmanuel)  
+    """,
+    unsafe_allow_html=True,
+)
 
 # ==============================
 # DOCUMENT UPLOAD
